@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클래스 4 자리표</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .stats {
+            margin: 10px 0;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        .seating-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .seating-table {
+            border-collapse: separate;
+            border-spacing: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .seat {
+            width: 120px;
+            height: 110px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            vertical-align: top;
+            padding: 5px 5px 2px 5px;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .seat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .seat.excellent {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+        }
+        
+        .seat.good {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, #ffffff 0%, #fffdf8 100%);
+        }
+        
+        .seat.needs {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #ffffff 0%, #fff8f8 100%);
+        }
+        
+        .seat.none {
+            border-color: #95a5a6;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+        
+        .student-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin: 2px auto 5px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: block;
+        }
+        
+        .no-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #ecf0f1;
+            margin: 2px auto 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #bdc3c7;
+        }
+        
+        .student-id {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 3px;
+            line-height: 1.1;
+        }
+        
+        .student-score {
+            font-size: 0.75em;
+            font-weight: bold;
+            padding: 1px 4px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .excellent .student-score {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .good .student-score {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .needs .student-score {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .none .student-score {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-image {
+            max-width: 300px;
+            max-height: 400px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .modal-info {
+            margin-top: 15px;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media print {
+            body { margin: 0; }
+            .seating-table { page-break-inside: avoid; }
+            .modal { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏫 클래스 4 자리표</h1>
+    </div>
+    
+    <div class="seating-container">
+        <table class="seating-table">
+            <tr>
+                <td class="seat"></td>
+                <td class="seat"></td>
+                <td class="seat"></td>
+                <td class="seat"></td>
+
+                    <td class="seat needs">
+                        <img src="image/class_4/30709_김하영.jpg" alt="김하영" class="student-photo">
+                        <div class="student-id">7반 김하영</div>
+                        <div class="student-score">💪 32</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat good">
+                        <img src="image/class_4/30601_강은서.jpg" alt="강은서" class="student-photo">
+                        <div class="student-id">6반 강은서</div>
+                        <div class="student-score">👍 61</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30927_정현정.jpg" alt="정현정" class="student-photo">
+                        <div class="student-id">9반 정현정</div>
+                        <div class="student-score">💪 20</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30820_이태영.jpg" alt="이태영" class="student-photo">
+                        <div class="student-id">8반 이태영</div>
+                        <div class="student-score">🌟 83</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30909_김예경.jpg" alt="김예경" class="student-photo">
+                        <div class="student-id">9반 김예경</div>
+                        <div class="student-score">💪 20</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30307_김지아.jpg" alt="김지아" class="student-photo">
+                        <div class="student-id">3반 김지아</div>
+                        <div class="student-score">💪 27</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat needs">
+                        <img src="image/class_4/30306_김주하.jpg" alt="김주하" class="student-photo">
+                        <div class="student-id">3반 김주하</div>
+                        <div class="student-score">💪 52</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30117_오민교.jpg" alt="오민교" class="student-photo">
+                        <div class="student-id">1반 오민교</div>
+                        <div class="student-score">👍 70</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30713_박희영.jpg" alt="박희영" class="student-photo">
+                        <div class="student-id">7반 박희영</div>
+                        <div class="student-score">👍 77</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30112_박지우.jpg" alt="박지우" class="student-photo">
+                        <div class="student-id">1반 박지우</div>
+                        <div class="student-score">🌟 91</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30101_구가현.jpg" alt="구가현" class="student-photo">
+                        <div class="student-id">1반 구가현</div>
+                        <div class="student-score">👍 60</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat needs">
+                        <img src="image/class_4/30411_안수빈.jpg" alt="안수빈" class="student-photo">
+                        <div class="student-id">4반 안수빈</div>
+                        <div class="student-score">💪 32</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30127_정유담.jpg" alt="정유담" class="student-photo">
+                        <div class="student-id">1반 정유담</div>
+                        <div class="student-score">💪 56</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30618_이경화.jpg" alt="이경화" class="student-photo">
+                        <div class="student-id">6반 이경화</div>
+                        <div class="student-score">💪 20</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30114_배영서.jpg" alt="배영서" class="student-photo">
+                        <div class="student-id">1반 배영서</div>
+                        <div class="student-score">💪 20</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30711_류소은.jpg" alt="류소은" class="student-photo">
+                        <div class="student-id">7반 류소은</div>
+                        <div class="student-score">👍 73</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat excellent">
+                        <img src="image/class_4/30901_강희연.jpg" alt="강희연" class="student-photo">
+                        <div class="student-id">9반 강희연</div>
+                        <div class="student-score">🌟 86</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30812_신송현.jpg" alt="신송현" class="student-photo">
+                        <div class="student-id">8반 신송현</div>
+                        <div class="student-score">👍 71</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30613_노윤지.jpg" alt="노윤지" class="student-photo">
+                        <div class="student-id">6반 노윤지</div>
+                        <div class="student-score">👍 70</div>
+                    </td>
+    
+                    <td class="seat needs">
+                        <img src="image/class_4/30508_김유선.jpg" alt="김유선" class="student-photo">
+                        <div class="student-id">5반 김유선</div>
+                        <div class="student-score">💪 44</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30215_이세영.jpg" alt="이세영" class="student-photo">
+                        <div class="student-id">2반 이세영</div>
+                        <div class="student-score">🌟 83</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat good">
+                        <img src="image/class_4/30815_이서연.jpg" alt="이서연" class="student-photo">
+                        <div class="student-id">8반 이서연</div>
+                        <div class="student-score">👍 72</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30506_김서연.jpg" alt="김서연" class="student-photo">
+                        <div class="student-id">5반 김서연</div>
+                        <div class="student-score">🌟 82</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30317_양효은.jpg" alt="양효은" class="student-photo">
+                        <div class="student-id">3반 양효은</div>
+                        <div class="student-score">👍 60</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30609_김지서.jpg" alt="김지서" class="student-photo">
+                        <div class="student-id">6반 김지서</div>
+                        <div class="student-score">👍 74</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30211_양해민.jpg" alt="양해민" class="student-photo">
+                        <div class="student-id">2반 양해민</div>
+                        <div class="student-score">🌟 82</div>
+                    </td>
+                </tr>
+            <tr>
+
+                    <td class="seat needs">
+                        <img src="image/class_4/30808_서수윤.jpg" alt="서수윤" class="student-photo">
+                        <div class="student-id">8반 서수윤</div>
+                        <div class="student-score">💪 16</div>
+                    </td>
+    
+                    <td class="seat good">
+                        <img src="image/class_4/30707_김은성.jpg" alt="김은성" class="student-photo">
+                        <div class="student-id">7반 김은성</div>
+                        <div class="student-score">👍 72</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30505_김민서.jpg" alt="김민서" class="student-photo">
+                        <div class="student-id">5반 김민서</div>
+                        <div class="student-score">🌟 91</div>
+                    </td>
+    
+                    <td class="seat excellent">
+                        <img src="image/class_4/30409_박예원.jpg" alt="박예원" class="student-photo">
+                        <div class="student-id">4반 박예원</div>
+                        <div class="student-score">🌟 90</div>
+                    </td>
+    
+                    <td class="seat none">
+                        <div class="no-photo">👤</div>
+                        <div class="student-id">3반 이채은</div>
+                        <div class="student-score">❓ -</div>
+                    </td>
+                </tr>
+
+        </table>
+    </div>
+    
+    <!-- 이미지 모달 -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div id="modalInfo" class="modal-info"></div>
+        </div>
+    </div>
+
+    <script>
+        // 모달 관련 요소들
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalInfo = document.getElementById('modalInfo');
+        const closeBtn = document.querySelector('.close');
+        
+        // 자리 클릭 시 학생 정보 강조 및 이미지 모달
+        document.querySelectorAll('.seat:not(:empty)').forEach(seat => {
+            seat.addEventListener('click', function() {
+                // 기존 강조 제거
+                document.querySelectorAll('.seat').forEach(s => s.style.transform = '');
+                
+                // 클릭된 자리 강조
+                this.style.transform = 'scale(1.05)';
+                
+                // 이미지가 있는 경우 모달 표시
+                const img = this.querySelector('.student-photo');
+                if (img) {
+                    modalImage.src = img.src;
+                    modalImage.alt = img.alt;
+                    
+                    const studentId = this.querySelector('.student-id').textContent;
+                    const studentScore = this.querySelector('.student-score').textContent;
+                    modalInfo.innerHTML = `<strong>${studentId}</strong><br>성적: ${studentScore}`;
+                    
+                    modal.style.display = 'block';
+                }
+                
+                // 3초 후 강조 해제
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 3000);
+            });
+        });
+        
+        // 모달 닫기
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // 모달 배경 클릭 시 닫기
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // 인쇄 기능
+        function printSeatingChart() {
+            window.print();
+        }
+        
+        // 키보드 단축키 (Ctrl+P)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                printSeatingChart();
+            }
+        });
+    </script>
+</body>
+</html>
